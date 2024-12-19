@@ -26,7 +26,6 @@ def user_or_mod(request):
         return False
 
 
-
 def adm(request):
     try:
         bool = request.user.role == "ADMIN"
@@ -47,8 +46,6 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 
-
-
 @login_required(login_url='login')
 def edit_profile(request):
     user = request.user  # Получаем текущего пользователя
@@ -56,7 +53,8 @@ def edit_profile(request):
         form = UserChangeProfileForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()  # Сохраняем изменения в профиле
-            return redirect(reverse("user_profile", args=[request.user.id]))  # Перенаправляем на страницу профиля или другую страницу
+            return redirect(reverse("user_profile",
+                                    args=[request.user.id]))  # Перенаправляем на страницу профиля или другую страницу
     else:
         form = UserChangeProfileForm(instance=user)  # Заполняем форму данными пользователя
 
@@ -135,6 +133,7 @@ def favorite_recipe_list(request):
     else:
         return redirect('page_404')
 
+
 @login_required(login_url='login')
 def not_verified_recipes_list(request):
     if mod(request):
@@ -148,6 +147,7 @@ def not_verified_recipes_list(request):
     else:
         return redirect('page_404')
 
+
 @login_required(login_url='login')
 def recipe_steps_list(request, recipe_id):
     if user_or_mod(request):
@@ -158,6 +158,7 @@ def recipe_steps_list(request, recipe_id):
             'steps': steps
         }
         return render(request, 'user/recipe_steps.html', context)
+
 
 @login_required(login_url='login')
 def add_recipe_step(request, recipe_id):
@@ -179,6 +180,7 @@ def add_recipe_step(request, recipe_id):
     else:
         return redirect('page_404')
 
+
 @login_required(login_url="login")
 def add_or_delete_friend(request, id):
     if user_or_mod(request):
@@ -194,6 +196,7 @@ def add_or_delete_friend(request, id):
             return redirect('page_404')
     else:
         return redirect('page_404')
+
 
 @login_required(login_url="login")
 def add_or_delete_favorite_recipe(request, id):
@@ -243,6 +246,7 @@ def accept_recipe(request, recipe_id, is_accept):
     else:
         return redirect('page_404')
 
+
 @login_required(login_url="login")
 def manage_ingredients(request, recipe_id):
     if user_or_mod(request):
@@ -275,6 +279,7 @@ def manage_ingredients(request, recipe_id):
         }
         return render(request, 'user/manage_ingredients.html', context)
 
+
 @login_required(login_url="login")
 def manage_tags(request, recipe_id):
     if user_or_mod(request):
@@ -298,6 +303,7 @@ def manage_tags(request, recipe_id):
         }
         return render(request, 'user/manage_tags.html', context)
 
+
 @login_required(login_url='login')
 def user_relationships(request, user_id, is_subscriber):
     if (user_or_mod(request)):
@@ -319,6 +325,7 @@ def user_relationships(request, user_id, is_subscriber):
             return render(request, 'user/following_list.html', context)
     else:
         redirect('page_404')
+
 
 class BackupSQLView(View):
     def get(self, request):
@@ -366,6 +373,7 @@ class BackupSQLView(View):
         else:
             return redirect('page_404')
 
+
 class BackupCSVView(View):
     def get(self, request):
         if adm(request):
@@ -412,7 +420,8 @@ class BackupCSVView(View):
 
             # Сохраняем данные ингредиентов рецепта
             for recipe_ingredient in RecipeIngredient.objects.all():
-                writer.writerow(['Recipe Ingredient', recipe_ingredient.id, f'Recipe: {recipe_ingredient.recipe.id}, Ingredient: {recipe_ingredient.ingredient.id}, Quantity: {recipe_ingredient.quantity_in_grams}'])
+                writer.writerow(['Recipe Ingredient', recipe_ingredient.id,
+                                 f'Recipe: {recipe_ingredient.recipe.id}, Ingredient: {recipe_ingredient.ingredient.id}, Quantity: {recipe_ingredient.quantity_in_grams}'])
 
             # Сохраняем данные тегов
             for tag in Tag.objects.all():
@@ -421,7 +430,8 @@ class BackupCSVView(View):
 
             # Сохраняем данные тегов рецептов
             for recipe_tag in RecipeTag.objects.all():
-                writer.writerow(['Recipe Tag', recipe_tag.id, f'Tag: {recipe_tag.tag.id}, Recipe: {recipe_tag.recipe.id}'])
+                writer.writerow(
+                    ['Recipe Tag', recipe_tag.id, f'Tag: {recipe_tag.tag.id}, Recipe: {recipe_tag.recipe.id}'])
 
             # Сохраняем сообщения
             for message in Message.objects.all():
@@ -451,6 +461,7 @@ class BackupCSVView(View):
             return response
         else:
             return redirect('page_404')
+
 
 @login_required(login_url='login')
 def upload_sql_file(request):
@@ -489,6 +500,7 @@ def admin_home(request):
     else:
         return redirect('page_404')
 
+
 @login_required(login_url='login')
 def add_tag(request):
     if adm(request):
@@ -502,6 +514,7 @@ def add_tag(request):
         return render(request, 'admin/add_tag.html', {'form': form})
     else:
         return redirect('page_404')
+
 
 @login_required(login_url='login')
 def delete_user(request, user_id):
@@ -518,6 +531,7 @@ def delete_user(request, user_id):
     else:
         return redirect('page_404')
 
+
 @login_required(login_url='login')
 def undelete_user(request, user_id):
     if adm(request) and user_id != request.user.id:
@@ -527,6 +541,7 @@ def undelete_user(request, user_id):
         return redirect('admin_home')
     else:
         return redirect('page_404')
+
 
 @login_required(login_url='login')
 def change_user_role(request, user_id):
@@ -570,11 +585,8 @@ def home(request):
         return redirect('page_404')
 
 
-
-
 def custom_404_view(request):
     return render(request, '404.html')
-
 
 
 @login_required(login_url='login')
@@ -590,7 +602,6 @@ def user_profile(request, pk):
             your_acc = True
         else:
             recipes = user.recipe_set.filter(is_verified=True, deletion_reason='').order_by('-publication_date')
-
 
         podpisok_count = int(len(podpisok))
         podpischikov_count = int(len(podpischikov))
@@ -611,7 +622,8 @@ def my_profile(request):
         podpischikov_count = int(len(podpischikov))
         podpisok_count = int(len(podpisok))
         recipes = user.recipe_set.filter().order_by('-publication_date')
-        context = {'user': user, 'recipes': recipes, 'your_acc': True, 'podpisok_count': podpisok_count, 'podpischikov_count': podpischikov_count}
+        context = {'user': user, 'recipes': recipes, 'your_acc': True, 'podpisok_count': podpisok_count,
+                   'podpischikov_count': podpischikov_count}
         return render(request, 'user/user_profile.html', context)
     else:
         return redirect('page_404')
@@ -678,8 +690,9 @@ def search_recipe(request):
             recipes = recipes.filter(recipetag__tag__id__in=tag_ids).distinct()
 
         tags = Tag.objects.all()  # Получаем все теги для отображения в форме
-        return render(request, 'user/search_recipe.html', {'recipes': recipes, 'tags': tags, 'selected_tags': tag_ids, 'title_query': title_query,
-                                                           'cooking_time_query': cooking_time_query})
+        return render(request, 'user/search_recipe.html',
+                      {'recipes': recipes, 'tags': tags, 'selected_tags': tag_ids, 'title_query': title_query,
+                       'cooking_time_query': cooking_time_query})
 
     else:
         return redirect('page_404')
@@ -692,15 +705,14 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             if user.deletion_reason is not None and user.deletion_reason != '':
-                return render(request, 'auth/login.html',{'error':
-                'Вы были заблокированы по причине:' + user.deletion_reason})
+                return render(request, 'auth/login.html',
+                              {'error': 'Вы были заблокированы по причине:' + user.deletion_reason})
             login(request, user)
             if user.role == 'ADMIN':
                 return redirect('admin_home')
             return redirect('home')
         else:
-            return render(request, 'auth/login.html', {'error':
-                    'Неверное имя пользователя или пароль'})
+            return render(request, 'auth/login.html', {'error': 'Неверное имя пользователя или пароль'})
     return render(request, 'auth/login.html')
 
 
