@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Управление тегами для рецепта{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Добавление тегов для рецепта "{{ recipe.title }}"</h2>
+
+        <h3>Добавить тег к рецепту</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ recipe_tag_form.as_p }}
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+            <button type="submit">Добавить тег к рецепту</button>
+        </form>
+        <a class="btn" href="{% url 'recipe_detail' recipe.id %}" style="margin-top: 35px">Закончить добавление тегов</a>
+    </div>
+{% endblock %}

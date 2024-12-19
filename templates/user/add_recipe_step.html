@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Добавить этап к рецепту{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Добавление этапа к рецепту "{{ recipe.title }}"</h2>
+
+        <h3>Создать новый этап</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+            <button type="submit">Добавить этап</button>
+        </form>
+
+        <a class="btn" href="{% url 'manage_tags' recipe.id %}" style="margin-top: 35px">К добавлению тегов</a>
+    </div>
+{% endblock %}

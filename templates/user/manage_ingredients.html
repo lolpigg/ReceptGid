@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Управление ингредиентами для рецепта{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Добавление ингредиентов для рецепта "{{ recipe.title }}"</h2>
+
+        <h3>Создать новый ингредиент</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ ingredient_form.as_p }}
+            <button type="submit">Создать ингредиент</button>
+        </form>
+
+        <h3>Добавить ингредиент к рецепту</h3>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ recipe_ingredient_form.as_p }}
+            <input type="hidden" name="recipe_id" value="{{ recipe.id }}">
+            <button type="submit">Добавить ингредиент к рецепту</button>
+        </form>
+        <a class="btn" href="{% url 'add_recipe_step' recipe.id %}" style="margin-top: 35px">К добавлению этапов</a>
+    </div>
+{% endblock %}

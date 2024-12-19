@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Шаги рецепта: {{ recipe.title }}{% endblock %}
+{% block content %}
+<div class="container" style="max-width: fit-content">
+    <h1>{{ recipe.title }}</h1>
+    <a href="{% url 'user_profile' recipe.user.id %}"><h3>{{ recipe.user.username }}</h3></a>
+    <div class="recipe-details">
+        <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}" class="recipe-image">
+        <div class="recipe-info">
+            <h2>Шаги приготовления</h2>
+            <ol>
+                {% for step in steps %}
+                    <li>
+                        <h3>{{ step.description }}</h3>
+                        {% if step.photo %}
+                            <img src="{{ step.photo.url }}" alt="Шаг {{ step.step_number }}" class="step-image">
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li><h3>Нет шагов для этого рецепта.</h3></li>
+                {% endfor %}
+            </ol>
+            <a href="{% url 'recipe_detail' recipe.id %}" class="btn btn-secondary" style="margin-top: 10px">Вернуться к рецепту</a>
+        </div>
+    </div>
+    <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-top: 10px">Назад на главную</a>
+</div>
+{% endblock %}

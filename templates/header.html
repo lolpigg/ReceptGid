@@ -1,0 +1,25 @@
+<header style="background-color: #f0fff0; padding: 10px; text-align: center;">
+    <nav>
+        <ul style="list-style-type: none; padding: 0; display: inline-block;">
+            <li style="display: inline; margin: 0 15px;">
+                <a href="{% url 'home' %}" style="text-decoration: none; color: #4caf50;">Главная</a>
+            </li>
+            <li style="display: inline; margin: 0 15px;">
+                <a href="{% url 'search_recipe' %}" style="text-decoration: none; color: #4caf50;">Поиск рецептов</a>
+            </li>
+            <li style="display: inline; margin: 0 15px;">
+                <a href="{% url 'create_recipe' %}" style="text-decoration: none; color: #4caf50;">Создать рецепт</a>
+            </li>
+            <li style="display: inline; margin: 0 15px;">
+                <a href="{% url 'favorite_recipe_list' %}" style="text-decoration: none; color: #4caf50;">Избранное</a>
+            </li>
+            <li style="display: inline; margin: 0 15px;">
+                <a href="{% url 'my_profile' %}" style="text-decoration: none; color: #4caf50;">Мой профиль</a>
+            </li>
+            <li style="display: inline; margin: 0 15px;">
+                <a href="{% url 'logout' %}" style="text-decoration: none; color: #4caf50;">Выйти</a>
+            </li>
+        </ul>
+    </nav>
+    <h1 style="color: #4caf50;">РецептГид</h1>
+</header>

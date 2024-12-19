@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение роли</title>
+    <link rel="stylesheet" href="{% static 'styles/admin.css' %}">
+</head>
+<body>
+    <h1>Изменение роли {{ user.username }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Изменить роль</button>
+    </form>
+    <a href="{% url 'home' %}">Вернуться назад</a>
+</body>
+</html>

@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Детали рецепта{% endblock %}
+{% block content %}
+<div class="container" style="max-width: fit-content">
+    <h1>{{ recipe.title }}</h1>
+    <a href="{% url 'user_profile' recipe.user.id %}"><h3>{{ recipe.user.username }}</h3></a>
+    <div class="recipe-details">
+        <img src="{{ recipe.photo.url }}" alt="{{ recipe.title }}" class="recipe-image">
+        <div class="recipe-info">
+            <h2>Описание</h2>
+            <p>{{ recipe.description }}</p>
+            <h3>Время приготовления: {{ recipe.cooking_time }} минут</h3>
+            {% if recipe.rating != 0.0 %}
+                <h3>Рейтинг: {{ recipe.rating }}</h3>
+            {% else %}
+                <h3>Без рейтинга</h3>
+            {% endif %}
+            <h3>Порции: {{ recipe.servings }}</h3>
+            <h3>Ингредиенты:</h3>
+            <ul>
+                {% for ingredient_name, quantity in ingredients %}
+                    <li><h3>{{ ingredient_name }} - {{ quantity }} г</h3></li>
+                {% endfor %}
+            </ul>
+            <h3>Калорийность на 100г: {{ recipe.kcal_per_100g }} ккал</h3>
+            <h3>Белки на 100г: {{ recipe.protein_per_100g }} г</h3>
+            <h3>Жиры на 100г: {{ recipe.fat_per_100g }} г</h3>
+            <h3>Углеводы на 100г: {{ recipe.carbohydrates_per_100g }} г</h3>
+            <a href="{% url 'recipe_steps_list' recipe.id %}" class="btn btn-secondary" style="margin-top: 10px">Просмотреть этапы</a>
+            {% if recipe.is_verified %}
+                <p class="verified">Статус: Опубликован.</p>
+                {% if is_fav %}
+                    <a href="{% url 'add_or_delete_favorite_recipe' recipe.id %}" class="btn btn-secondary" style="margin-top: 10px">Убрать из избранного</a>
+                {% else %}
+                    <a href="{% url 'add_or_delete_favorite_recipe' recipe.id %}" class="btn btn-secondary" style="margin-top: 10px">Добавить в избранное</a>
+                {% endif %}
+            {% else %}
+                {% if recipe.deletion_reason != '' and recipe.deletion_reason != None %}
+                    <p class="unverified">Статус: не принят. Причина:</p>
+                    <p class="unverified">{{ recipe.deletion_reason }}</p>
+                {% else %}
+                    <p class="unverified">Статус: Неопубликован</p>
+                    {% if moder %}
+                        <a href="{% url 'accept_recipe' recipe.id 'True' %}" class="btn btn-secondary" style="margin-top: 10px">Принять рецепт</a>
+                        <a href="{% url 'accept_recipe' recipe.id 'False' %}" class="btn btn-secondary" style="margin-top: 10px">Удалить рецепт</a>
+                    {% else %}
+                        <a href="{% url 'manage_ingredients' recipe.id %}" class="btn btn-secondary" style="margin-top: 10px">Добавить ингридиенты, этапы и теги</a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+    <a href="{% url 'home' %}" class="btn btn-secondary" style="margin-top: 10px">Назад на главную</a>
+</div>
+{% endblock %}

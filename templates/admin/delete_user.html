@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление пользователя</title>
+        <link rel="stylesheet" href="{% static 'styles/admin.css' %}">
+</head>
+<body>
+    <h1>Удаление пользователя {{ user.username }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Удалить пользователя</button>
+    </form>
+    <a href="{% url 'admin_home' %}">Вернуться назад</a>
+</body>
+</html>

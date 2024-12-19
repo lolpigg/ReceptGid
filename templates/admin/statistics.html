@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Статистика</title>
+    <link rel="stylesheet" href="{% static 'styles/admin.css' %}">
+</head>
+<body>
+    <h1>Статистика пользователей и рецептов</h1>
+
+    <h2>Количество пользователей по ролям</h2>
+    <img src="data:image/png;base64,{{ graph_roles }}" alt="График количества пользователей по ролям">
+
+    <h2>Количество опубликованных рецептов у пользователей</h2>
+    <img src="data:image/png;base64,{{ graph_recipes }}" alt="График количества рецептов у пользователей">
+
+</body>
+</html>

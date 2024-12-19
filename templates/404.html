@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Страница не найдена{% endblock %}
+{% block content %}
+<main>
+    <div class="container">
+        <h2>Ошибка 404</h2>
+        <p>Извините, но запрашиваемая страница не найдена.</p>
+        <a href="{% url 'home' %}" class="btn">Вернуться на главную</a>
+    </div>
+</main>
+{% endblock %}

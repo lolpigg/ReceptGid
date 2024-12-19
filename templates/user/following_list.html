@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Подписки{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="header">Подписки <a href="{% url 'user_profile' user.id %}">{{ user.username }}</a></h1>
+        <ul class="list">
+            {% for follow in following %}
+                <li class="list-item">
+                    {% if follow.accepter.photo %}
+                        <img class="avatar" style="width: 80px;height: 80px;" src="{{ follow.accepter.photo.url }}" alt="Фото {{ follow.accepter.username }}">
+                    {% else %}
+                        <img class="avatar" style="width: 80px;height: 80px;" src="/media/default_photo.png" alt="Фото по умолчанию">
+                    {% endif %}
+                    <a href="{% url 'user_profile' follow.accepter.id %}">{{ follow.accepter.username }}</a>
+                </li>
+            {% empty %}
+                <li class="no-followers">Нет подписчиков.</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

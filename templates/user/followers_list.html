@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Подписчики{% endblock %}
+{% block content %}
+    <div class="container">
+        <h1 class="header">Подписчики <a href="{% url 'user_profile' user.id %}">{{ user.username }}</a></h1>
+        <ul class="list">
+            {% for follow in followers %}
+                <li class="list-item">
+                    {% if follow.requester.photo %}
+                        <img style="width: 80px; height: 80px;" class="avatar" src="{{ follow.requester.photo.url }}" alt="Фото {{ follow.requester.username }}">
+                    {% else %}
+                        <img style="width: 80px; height: 80px;" class="avatar" src="/media/default_photo.png" alt="Фото {{ follow.requester.username }}">
+                    {% endif %}
+                    <br>
+                    <a href="{% url 'user_profile' follow.requester.id %}">{{ follow.requester.username }}</a>
+                </li>
+            {% empty %}
+                <li class="no-followers">Нет подписчиков.</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

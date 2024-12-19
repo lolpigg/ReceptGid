@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Профиль{% endblock %}
+{% block content %}
+<main>
+    <div class="">
+        {% if your_acc %}
+            <h1>Это вы, {{ user.username }}</h1>
+            <a href="{% url 'edit_profile' %}" class="btn">Изменить профиль</a>
+        {% else %}
+            <h1>Профиль {{ user.username }}</h1>
+            {% if in_friends %}
+                <a href="{% url 'add_or_delete_friend' user.id %}" class="btn">Отписаться</a>
+            {% else %}
+                <a href="{% url 'add_or_delete_friend' user.id %}" class="btn">Подписаться</a>
+            {% endif %}
+        {% endif %}
+
+        <div class="recipe-info" style="margin-top: 10px">
+            {% if user.photo %}
+                <img src="{{ user.photo.url }}" alt="Фото {{ user.username }}" class="profile-image">
+            {% else %}
+                <img src="/media/default_photo.png" alt="Фото по умолчанию" class="profile-image">
+            {% endif %}
+
+            <p><strong>Подписчиков: </strong><a href="{% url 'user_relationships' user.id 'True' %}">{{ podpischikov_count }}</a></p>
+            <p><strong>Подписок: </strong><a href="{% url 'user_relationships' user.id 'False' %}">{{ podpisok_count }}</a></p>
+
+            <p><strong>Описание:</strong> {{ user.description|default:"Описание отсутствует." }}</p>
+            <p><strong>Дата рождения:</strong> {{ user.date_of_birth|date:"j F Y"|default:"Не указано" }}</p>
+            {% if user.rating != 0.0 %}
+                <p><strong>Рейтинг:</strong> {{ user.rating }}</p>
+            {% endif %}
+        </div>
+
+        {% if your_acc %}
+            <h2>Ваши рецепты</h2>
+            {% if recipes %}
+                <div class="recipe-list">
+                    {% for recipe in recipes %}
+                        <div class="recipe-card">
+                            <h2>{{ recipe.title }}</h2>
+                            <span> - {{ recipe.publication_date|date:"j F Y" }}</span>
+                            <a href="{% url 'recipe_detail' recipe.id %}" class="btn">Подробнее</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>У вас нет рецептов.</p>
+            {% endif %}
+        {% else %}
+            <h2>Проверенные рецепты {{ user.username }}</h2>
+            {% if recipes %}
+                <div class="recipe-list">
+                    {% for recipe in recipes %}
+                        <div class="recipe-card">
+                            <h2>{{ recipe.title }}</h2>
+                            <span> - {{ recipe.publication_date|date:"j F Y" }}</span>
+                            <a href="{% url 'recipe_detail' recipe.id %}" class="btn">Подробнее</a>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Нет доступных проверенных рецептов.</p>
+            {% endif %}
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

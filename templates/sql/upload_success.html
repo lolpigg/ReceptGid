@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Загрузка успешна</title>
+    <link rel="stylesheet" href="{% static 'styles/admin.css' %}">
+</head>
+<body>
+    <p>Загрузка успешна!</p>
+    <a href="{% url 'admin_home' %}">Вернуться назад</a>
+</body>
+</html>
