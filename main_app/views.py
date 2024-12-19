@@ -692,13 +692,15 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             if user.deletion_reason is not None and user.deletion_reason != '':
-                return render(request, 'auth/login.html',{'error': 'Вы были заблокированы по причине:' + user.deletion_reason})
+                return render(request, 'auth/login.html',{'error':
+                'Вы были заблокированы по причине:' + user.deletion_reason})
             login(request, user)
             if user.role == 'ADMIN':
                 return redirect('admin_home')
             return redirect('home')
         else:
-            return render(request, 'auth/login.html', {'error': 'Неверное имя пользователя или пароль'})
+            return render(request, 'auth/login.html', {'error':
+                    'Неверное имя пользователя или пароль'})
     return render(request, 'auth/login.html')
 
 
